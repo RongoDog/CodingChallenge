@@ -1,44 +1,93 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# MediaJel Engineering Coding Challenge
 
-## Available Scripts
+## Context
+Image a situation where we would like have a form that allows us to create tagged data elements. Image further that these tagged elements have some sort of grouping or necessary ordering. The purpose of this coding challenge is to demonstrate ability in both structuring a data model and building front-end components.
 
-In the project directory, you can run:
+Given a situation where a group of well-known wine tasters and their experience regarding a specific wine are tagged. How can we store this data in our database in a way where we can devise interesting inferences. 
 
-### `npm start`
+Some initial code, which demonstates how the datamodel is developed, can be found at `./database/datamodel.graphql`. By the end of the challenge, there should be a GraphQL type depicting a tasting session, which may have several tasters, wines, and reviews. The Review type should have some interesting tags that we could perhaps use to draw correlations. 
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+The front-end should be built in such a way that tasting session data can be inserted into the database by a user. This may mean that new tasters or wines need to be created. Some drop-downs should be used to facilitate interaction with the form. Modularity and functionality is emphasized here, rather than visual appeal (basic HTML styling should be fine). Boilerplate is provided, that demonstrates how to connect to the Prisma instance from the client using React Apollo. The existing code should not be considered complete or a good representation of the final solution. It exists purely to demonstrate the ncessary React/Apollo/GraphQL functionality.
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+## Technologies
+There is some code provided that will allow you to get started quickly, without worrying too much about setup. There are, however, a few dependencies that you might have to install on your system.
 
-### `npm test`
+### Installing Yarn (OSX)
+To install Yarn, make sure that you use use the --without-node flag to use nvm's version.
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```
+brew install yarn --without-node
+```
 
-### `npm run build`
+To access Yarn's executables globally, add the folowing to your profile.
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+export PATH="$PATH:`yarn global bin`"
+```
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+### Installing NodeJS with NVM
+Use either curl or wget to install NVM
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+```
 
-### `npm run eject`
+```
+wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+The script will clone the NVM repository to a .nvm folder in your home directory. It will also add the source
+line to your profile (e.g. `~/.bash_profile`). Note that you might want to add it yourself.
+Enesure that the following is in your profile.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+If everything is correctly configured, reload your shell: `source ~\.bash_profile`
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+The proper version of NodeJS can now be installing using NVM. As of writing this, we are using v10.0.0
 
-## Learn More
+```
+nvm install v10.0.0
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+You might also want to set it as the default.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```
+nvm alias default v10.0.0
+```
+
+### Installing GraphQL and Prisma CLIs
+You need to have the [GraphQL CLI](https://github.com/graphql-cli/graphql-cli) installed to bootstrap your GraphQL server using `graphql create`. The [Prisma CLI](https://github.com/prismagraphql/prisma/) allows you to deploy your code.
+
+```sh
+yarn global add graphql-cli
+yarn global add prisma
+yarn global add prisma-binding
+```
+
+### Installing Docker
+Installing Docker will depend on your system.  The instructions for OSX can be found here: https://docs.docker.com/docker-for-mac/install/
+
+It's important to make sure that docker-compose is also installed, as it will be used to run the backend. 
+
+## Setup
+
+Once all your dependencies are installed, you can begin deploying your backend, which will consist of a [Prisma](https://www.prisma.io/) server connected to a local [MySQL](https://www.mysql.com/) instance. 
+
+- The following will start the backend: 
+```sh
+docker-compose up -d
+```
+- We can deploy the datamodel (found at `./database/datamodel.graphql`) using the following command. You will need to make changes to this file to develop an adequate datamodel.
+```sh
+prisma deploy
+```
+- The front-end can be started by simply running
+```sh
+yarn start
+```
+

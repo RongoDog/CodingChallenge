@@ -1,0 +1,30 @@
+
+type WineTaster {
+  id: ID! @unique
+  name: String! @unique
+  nationality: String
+  favouriteWine: Wine
+}
+
+type Wine {
+  id: ID! @unique
+  name: String
+  grapes: [WineGrapes] # Could be enum
+}
+
+type Review {
+  id: ID! @unique
+  wine: Wine!
+  wineTaster: WineTaster!
+}
+
+enum WineGrapes {
+  RIESLING
+  GEWURZTRAMINER
+  CHARDONNAY
+  SAUVIGNON_BLANC
+  SYRAH
+  MERLOT
+  CABERNET_SAUVIGNON
+  PINOT_NOIR
+}
